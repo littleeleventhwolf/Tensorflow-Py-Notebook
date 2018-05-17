@@ -137,6 +137,7 @@ def main():
 	B, H, W, C = input_img.shape
 
 	# initialize theta to identity transform
+	# M = np.array([[1., 0., 0.], [0., 1., 0.]])
 	M = np.array([[0.707, -0.707, 0.], [0.707, 0.707, 0.]])
 
 	# repeat num_batch times
