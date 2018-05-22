@@ -116,7 +116,7 @@ def generate_batch_indices(X, batch_size=batch_size):
 	- batch_indices: tuple (x, y) containing the starting
 	  and ending point of the each batch.
 	"""
-	num_train = len(x)
+	num_train = len(X)
 	total_batch = int(np.ceil(num_train / float(batch_size)))
 	batch_indices = [(i * batch_size, min(num_train, (i + 1) * batch_size))
 						for i in range(0, total_batch)]
@@ -250,7 +250,7 @@ def main():
 	fc3_loc = Dense(fc2_loc, 512, 6, use_relu=False, trans=True, name='fc3_loc')
 
 	# spatial transformer
-	h_trans = stn(X, fc3_loc)
+	h_trans = stn(X, fc3_loc, out_dims=(H, W))
 
 	# convnet
 	conv1 = Conv2D(h_trans, 1, 5, 32, name='conv1')
@@ -318,6 +318,7 @@ def main():
 				print("Trying to restore last checkpoint...")
 				last_chk_path = tf.train.latest_checkpoint(checkpoint_dir=save_dir)
 				saver.restore(sess, save_path=last_chk_path)
+				print("Restored checkpoint from: ", last_chk_path)
 			except:
 				print("Failed to restore checkpoint. Initializing variables instead.")
 				sess.run(tf.global_variables_initializer())
@@ -356,8 +357,7 @@ def main():
 				if (i_global % display_step == 0) or (i == num_iterations - 1):
 
 					# calculate loss and accuracy on training batch
-					train_batch_loss, train_batch_acc, train_summary = 
-								sess.run([loss, accuracy, summary_op], feed_dict=train_feed_dict)
+					train_batch_loss, train_batch_acc, train_summary = sess.run([loss, accuracy, summary_op], feed_dict=train_feed_dict)
 					writer.add_summary(train_summary, i_global)
 
 					# calculate loss and accuracy on validation batch
@@ -371,9 +371,8 @@ def main():
 						saver.save(sess=sess, save_path=save_path+str(best_validation_accuracy), global_step=i_global)
 						improved_str = '*'
 
-					print("Iter: {}/{} - loss: {:.4f} - acc: {:.4f} - val_loss: {:.4f} - val_acc: {:.4f} - {}".format(
-							i_global, num_iterations, train_batch_loss, train_batch_acc, valid_batch_loss,
-							valid_batch_acc, improved_str))
+					print("Iter: {}/{} - loss: {:.4f} - acc: {:.4f} - val_loss: {:.4f} - val_acc: {:.4f} - {}".format(i_global,
+							num_iterations, train_batch_loss, train_batch_acc, valid_batch_loss, valid_batch_acc, improved_str))
 
 				# if no improvement in a while, stop training
 				if i_global - last_improvement > require_improvement:
