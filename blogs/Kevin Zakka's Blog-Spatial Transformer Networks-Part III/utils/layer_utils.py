@@ -21,7 +21,7 @@ def init_bias(name, shape, trans=False):
 
 	Performs zero bias initialization.
 	"""
-	init = tf.zeros_initializer()
+	init = tf.zeros_initializer
 	b = tf.get_variable(name, shape, tf.float32, init)
 
 	if trans:
