@@ -87,7 +87,8 @@ def weight_variable(shape):
 	shape : list
 	    Size of weight variable.
 	'''
-	initial = tf.random_normal(shape, mean=0.0, stddev=0.01)
+	# initial = tf.random_normal(shape, mean=0.0, stddev=0.01)
+	initial = tf.zeros(shape)
 	return tf.Variable(initial)
 
 def bias_variable(shape):
@@ -100,6 +101,7 @@ def bias_variable(shape):
 	    Size of bias variable.
 	'''
 	initial = tf.random_normal(shape, mean=0.0, stddev=0.01)
+	return tf.Variable(initial)
 
 def dense_to_one_hot(labels, n_classes=2):
 	"""Convert class labels from scalars to one-hot vectors."""
