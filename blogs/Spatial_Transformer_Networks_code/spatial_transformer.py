@@ -122,7 +122,7 @@ def transformer(U, theta, out_size, name='SpatialTransformer', **kwargs):
 			y_t_flat = tf.reshape(y_t, (1, -1))
 
 			ones = tf.ones_like(x_t_flat)
-			grid = tf.concat(0, [x_t_flat, y_t_flat, ones])
+			grid = tf.concat([x_t_flat, y_t_flat, ones], 0)
 			return grid
 
 	def _transform(theta, input_dim, out_size):
@@ -146,7 +146,7 @@ def transformer(U, theta, out_size, name='SpatialTransformer', **kwargs):
 			grid = tf.reshape(grid, tf.stack([num_batch, 3, -1]))
 
 			# Transform A x (x_t, y_t, 1)^T -> (x_s, y_s)
-			T_g = tf.batch_matmul(theta, grid)
+			T_g = tf.matmul(theta, grid)
 			x_s = tf.slice(T_g, [0, 0, 0], [-1, 1, -1])
 			y_s = tf.slice(T_g, [0, 1, 0], [-1, 1, -1])
 			x_s_flat = tf.reshape(x_s, [-1])
