@@ -10,7 +10,7 @@ STYLE_WEIGHT = 1e2
 TV_WEIGHT = 2e2
 ITERATIONS = 100
 CONTENT_LAYER = 'block4_conv2'
-STYLE_LAYERS = ['bolck1_conv1', 'block2_conv1', 'block3_conv1',
+STYLE_LAYERS = ['block1_conv1', 'block2_conv1', 'block3_conv1',
                 'block4_conv1', 'block5_conv1']
 
 def build_parser():
@@ -29,7 +29,7 @@ def build_parser():
 		                    help='Weight for content feature loss.')
 	parser.add_argument('--style_weight', type=float, default=STYLE_WEIGHT,
 		                    help='Weight for style feature loss.')
-	parser.add_argument('--tv_weight', type='float', default=TV_WEIGHT,
+	parser.add_argument('--tv_weight', type=float, default=TV_WEIGHT,
 		                    help='Weight for total variation loss.')
 	parser.add_argument('--width', type=int, help='output image width')
 	parser.add_argument('--convnet', type=str, default=CONVNET,

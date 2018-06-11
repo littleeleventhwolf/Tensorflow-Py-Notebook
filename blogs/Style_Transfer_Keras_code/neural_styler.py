@@ -147,7 +147,7 @@ class Neural_Styler(object):
 
 		for layer in self.style_layers:
 			# extract features of given layer
-			style_features = output_dict[layer]
+			style_features = outputs_dict[layer]
 			# from those features, extract style and output activations
 			style_image_features = style_features[1, :, :, :]
 			output_style_features = style_features[2, :, :, :]
@@ -197,7 +197,7 @@ class Neural_Styler(object):
 
 			# save current generated image
 			img = deprocess_image(x.copy(), self.img_nrows, self.img_ncols)
-			fname = self.output_img_path + '_at_iteration_%d.png' % (i+1)
+			fname = self.output_img_path + self.base_img_path.split('/')[-1].split('.')[0] + '_at_iteration_%d.png' % (i+1)
 			imsave(fname, img)
 
 			toc = time.time()
